@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_조건문과 반복문</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; }
+        code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>02_조건문과 반복문</h1>
+    <p>조건문은 상황에 따라 다른 코드를 실행할 때 사용한다.</p>
+    <p>반복문은 같은 구조의 코드를 여러 번 실행할 때 사용한다.</p>
+    <p>실행 결과는 개발자 도구의 <code>Console</code> 탭에서 확인한다.</p>
+
+    <script>
+        console.clear();
+
+        console.group('1. if / else if / else');
+        {
+            const score = 82;
+
+            if (score >= 90) {
+                console.log('A 등급');
+            } else if (score >= 80) {
+                console.log('B 등급');
+            } else if (score >= 70) {
+                console.log('C 등급');
+            } else {
+                console.log('보충 학습 필요');
+            }
+        }
+        console.groupEnd();
+
+        console.group('2. switch');
+        {
+            const menu = 'coffee';
+
+            switch (menu) {
+                case 'coffee':
+                    console.log('커피를 주문했다.');
+                    break;
+                case 'tea':
+                    console.log('차를 주문했다.');
+                    break;
+                case 'juice':
+                    console.log('주스를 주문했다.');
+                    break;
+                default:
+                    console.log('없는 메뉴이다.');
+            }
+        }
+        console.groupEnd();
+
+        console.group('3. for 반복문');
+        {
+            for (let i = 1; i <= 5; i++) {
+                console.log(`${i}번째 반복`);
+            }
+        }
+        console.groupEnd();
+
+        console.group('4. while 반복문');
+        {
+            let count = 3;
+
+            while (count > 0) {
+                console.log(`남은 카운트: ${count}`);
+                count--;
+            }
+        }
+        console.groupEnd();
+
+        console.group('5. 배열과 반복문');
+        {
+            const students = ['김철수', '이영희', '박민수', '최지은'];
+
+            for (let i = 0; i < students.length; i++) {
+                console.log(`${i + 1}. ${students[i]}`);
+            }
+
+            for (const student of students) {
+                console.log(`수강생 이름: ${student}`);
+            }
+        }
+        console.groupEnd();
+
+        console.group('6. 간단한 데이터 검색');
+        {
+            const products = [
+                { id: 1, name: '노트북', price: 1200000, category: '전자기기' },
+                { id: 2, name: '키보드', price: 80000, category: '전자기기' },
+                { id: 3, name: '텀블러', price: 15000, category: '생활용품' },
+                { id: 4, name: '마우스', price: 35000, category: '전자기기' }
+            ];
+
+            const keyword = '마우스';
+            let foundProduct = null;
+
+            for (const product of products) {
+                if (product.name === keyword) {
+                    foundProduct = product;
+                    break;
+                }
+            }
+
+            if (foundProduct !== null) {
+                console.log('검색 결과:', foundProduct);
+            } else {
+                console.log('검색 결과가 없다.');
+            }
+
+            for (const product of products) {
+                if (product.price >= 50000) {
+                    console.log(`5만원 이상 상품: ${product.name}`);
+                }
+            }
+        }
+        console.groupEnd();
+    </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01_변수, 자료형, 연산자</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; }
+        code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; }
+        section { margin-bottom: 24px; }
+    </style>
+</head>
+<body>
+    <h1>01_변수, 자료형, 연산자</h1>
+    <p>브라우저 개발자 도구의 <code>Console</code> 탭에서 실행 결과를 확인한다.</p>
+
+    <section>
+        <h2>학습 내용</h2>
+        <ul>
+            <li>변수 선언과 값 할당</li>
+            <li>숫자, 문자열, boolean, undefined, null, object</li>
+            <li>동적 타입 언어의 특징</li>
+            <li>암묵적 형 변환과 명시적 형 변환</li>
+            <li>비교 연산자와 논리 연산자</li>
+        </ul>
+    </section>
+
+    <script>
+        console.clear();
+
+        console.group('1. 변수와 숫자 타입');
+        {
+            // 값이 다시 바뀌지 않는 변수는 const로 선언한다.
+            // JavaScript의 숫자는 정수와 실수를 모두 number 타입으로 다룬다.
+            const integer = 10;
+            const double = 5.5;
+            const negative = -10;
+
+            console.log(integer);
+
+            // == 비교는 값만 비교하므로 10과 10.0을 같은 값으로 판단한다.
+            console.log(integer == 10.0);
+
+            console.log(double);
+            console.log(negative);
+        }
+        console.groupEnd();
+
+        console.group('2. 문자열 타입과 템플릿 리터럴');
+        {
+            // 값이 다시 할당되는 변수는 let으로 선언한다.
+            let string = 'JavaScript';
+
+            // 문자열은 작은따옴표, 큰따옴표, 백틱으로 작성할 수 있다.
+            string = "JavaScript";
+            string = `JavaScript`;
+
+            // 백틱(``)을 사용하면 여러 줄 문자열을 그대로 표현할 수 있다.
+            const str = `안녕하세요.
+반갑습니다.
+제 이름은 홍길동입니다.`;
+            console.log(str);
+
+            const lastName = '홍';
+            const firstName = '길동';
+
+            // 문자열은 + 연산자로 연결할 수 있다.
+            console.log('제 이름은 ' + lastName + firstName + '입니다.');
+
+            // 템플릿 리터럴을 사용하면 ${} 안에 변수나 표현식을 넣을 수 있다.
+            console.log(`제 이름은 ${lastName}${firstName}입니다.`);
+        }
+        console.groupEnd();
+
+        console.group('3. boolean, undefined, null');
+        {
+            // boolean 타입은 true 또는 false 값을 가진다.
+            let flag = true;
+            console.log(flag);
+
+            flag = false;
+            console.log(flag);
+
+            // 값을 할당하지 않은 변수의 값은 undefined이다.
+            let undef;
+            console.log(undef);
+
+            // null은 의도적으로 값이 없음을 표현할 때 사용한다.
+            let nullVal = 'something';
+            nullVal = null;
+            console.log(nullVal);
+        }
+        console.groupEnd();
+
+        console.group('4. symbol과 object');
+        {
+            // Symbol은 중복되지 않는 고유한 값을 만들 때 사용한다.
+            const key = Symbol('key');
+            console.log(key);
+            console.log(typeof key);
+
+            // const로 선언한 객체도 내부 속성은 추가하거나 변경할 수 있다.
+            // const는 변수에 다른 객체를 다시 대입하는 것을 막는다.
+            const obj = {};
+            obj[key] = 'value';
+            console.log(obj);
+        }
+        console.groupEnd();
+
+        console.group('5. 동적 타입 언어');
+        {
+            // JavaScript는 변수에 들어가는 값에 따라 타입이 결정된다.
+            let test;
+            console.log(typeof test);
+
+            test = 1;
+            console.log(typeof test);
+
+            test = 'JavaScript';
+            console.log(typeof test);
+
+            test = true;
+            console.log(typeof test);
+
+            // typeof null의 결과는 object이다.
+            // JavaScript의 오래된 특징 중 하나로, null 자체가 객체라는 뜻은 아니다.
+            test = null;
+            console.log(typeof test);
+
+            test = Symbol();
+            console.log(typeof test);
+
+            test = {};
+            console.log(typeof test);
+
+            // 배열도 typeof 결과는 object로 나온다.
+            test = [];
+            console.log(typeof test);
+
+            test = function(){};
+            console.log(typeof test);
+        }
+        console.groupEnd();
+
+        console.group('6. 암묵적 형 변환');
+        {
+            // + 연산에서 문자열이 포함되면 문자열 연결로 처리된다.
+            console.log(10 + '20');
+
+            // 숫자끼리 더하면 산술 연산으로 처리된다.
+            console.log(`10 + 20 : ${10 + 20}`);
+
+            // -, *, / 연산은 문자열을 숫자로 바꾸려고 시도한다.
+            console.log(10 - '5');
+            console.log(10 * '5');
+            console.log(10 / '5');
+
+            // 숫자로 바꿀 수 없는 값은 NaN이 된다.
+            console.log(10 % 'JavaScript');
+
+            // 비교 연산에서도 필요에 따라 암묵적 형 변환이 발생한다.
+            console.log(10 > '5');
+            console.log(10 > '20');
+
+            // 'a'는 숫자로 변환할 수 없으므로 정상적인 숫자 비교가 어렵다.
+            console.log(`100 > 'a' : ${100 > 'a'}`);
+
+            // NaN은 자기 자신과도 같지 않다.
+            console.log(`NaN == NaN : ${NaN == NaN}`);
+
+            // NaN인지 확인할 때는 isNaN()을 사용할 수 있다.
+            console.log(`isNaN(NaN) : ${isNaN(NaN)}`);
+
+            // 단항 + 연산자는 값을 숫자로 변환하려고 시도한다.
+            console.log(+'');
+            console.log(+'1');
+            console.log(+'JavaScript');
+            console.log(+true);
+            console.log(+false);
+            console.log(+null);
+            console.log(+undefined);
+
+            // if 조건식에서는 값이 true처럼 평가되는지, false처럼 평가되는지를 판단한다.
+            if (undefined) console.log('if(undefined)');
+            if (null) console.log('if(null)');
+            if (0) console.log('if(0)');
+            if (1) console.log('if(1)');
+            if (NaN) console.log('if(NaN)');
+            if ('') console.log("if('')");
+            if ('JavaScript') console.log("if('JavaScript')");
+        }
+        console.groupEnd();
+
+        console.group('7. 명시적 형 변환');
+        {
+            // String()은 값을 문자열로 변환한다.
+            console.log(String(10));
+            console.log(String(true));
+            console.log((10).toString());
+
+            // Number()는 값을 숫자로 변환한다.
+            console.log(Number('10'));
+            console.log(Number('10.01'));
+            console.log(Number(true));
+            console.log(Number(false));
+
+            // parseInt()는 정수, parseFloat()은 실수 형태로 변환한다.
+            console.log(parseInt('10.01'));
+            console.log(parseFloat('10.01'));
+
+            // Boolean()은 값을 true 또는 false로 변환한다.
+            console.log(Boolean('JavaScript'));
+            console.log(Boolean(''));
+            console.log(Boolean(1));
+            console.log(Boolean(0));
+            console.log(Boolean(null));
+            console.log(Boolean(undefined));
+
+            // 빈 객체와 빈 배열은 true로 평가된다.
+            console.log(Boolean({}));
+            console.log(Boolean([]));
+        }
+        console.groupEnd();
+
+        console.group('8. 비교 연산자');
+        {
+            // ==는 값이 같으면 true로 판단하며, 비교 전에 형 변환이 발생할 수 있다.
+            console.log(`1 == '1' : ${1 == '1'}`);
+            console.log(`1 == true : ${1 == true}`);
+
+            // ===는 값과 타입이 모두 같아야 true로 판단한다.
+            console.log(`1 === '1' : ${1 === '1'}`);
+            console.log(`1 === true : ${1 === true}`);
+
+            // == 비교는 예상하기 어려운 결과를 만들 수 있으므로 주의해야 한다.
+            console.log(`0 == '0' : ${0 == '0'}`);
+            console.log(`0 == false : ${0 == false}`);
+            console.log(`0 == '' : ${0 == ''}`);
+
+            // 실무에서는 가능하면 ===를 사용하는 것이 안전하다.
+            console.log(`0 === '0' : ${0 === '0'}`);
+            console.log(`0 === false : ${0 === false}`);
+            console.log(`0 === '' : ${0 === ''}`);
+
+            console.log(`null == undefined : ${null == undefined}`);
+            console.log(`null === undefined : ${null === undefined}`);
+
+            // NaN은 ===로 비교해도 자기 자신과 같지 않다.
+            console.log(`NaN === NaN : ${NaN === NaN}`);
+
+            // 문자열끼리는 사전 순서 기준으로 비교된다.
+            console.log(`'apple' < 'banana' : ${'apple' < 'banana'}`);
+        }
+        console.groupEnd();
+
+        console.group('9. 논리 연산자와 단축 평가');
+        {
+            // ||는 앞의 값이 true처럼 평가되면 앞의 값을 반환한다.
+            console.log('apple' || 'banana');
+
+            // 앞의 값이 false처럼 평가되면 뒤의 값을 반환한다.
+            console.log(false || 'banana');
+
+            // &&는 앞의 값이 true처럼 평가되면 뒤의 값을 확인한다.
+            console.log('apple' && 'banana');
+
+            // 앞의 값이 false처럼 평가되면 뒤를 확인하지 않고 앞의 값을 반환한다.
+            console.log(false && 'banana');
+
+            const obj = null;
+
+            // &&를 사용하면 obj가 존재할 때만 obj.value에 접근할 수 있다.
+            // const val = obj.value; -> 오류 발생
+            const val = obj && obj.value;
+            console.log(val);
+
+            // ?.는 optional chaining 문법이다.
+            // 객체가 null 또는 undefined이면 에러 대신 undefined를 반환한다.
+            const val2 = obj?.value;
+            console.log(val2);
+
+            // ??는 null 또는 undefined일 때만 기본값을 사용한다.
+            const basicValue = obj ?? '기본값';
+            console.log(basicValue);
+
+            // ||는 빈 문자열을 false처럼 판단하여 기본값을 반환한다.
+            console.log('' || '기본값');
+
+            // ??는 빈 문자열을 실제 값으로 인정한다.
+            console.log('' ?? '기본값');
+        }
+        console.groupEnd();
+    </script>
+</body>
+</html>

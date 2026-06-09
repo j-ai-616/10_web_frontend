@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응형 웹과 미디어 쿼리</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            padding: 32px 24px;
+            background: #222;
+            color: white;
+            text-align: center;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .description {
+            line-height: 1.7;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .card-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .card p {
+            line-height: 1.6;
+        }
+
+        /*
+            미디어 쿼리는 화면 크기 같은 조건에 따라 다른 CSS를 적용할 때 사용한다.
+            아래 코드는 화면 너비가 768px 이하일 때 카드 배치를 1열로 변경한다.
+        */
+        @media (max-width: 768px) {
+            header {
+                padding: 24px 16px;
+            }
+
+            main {
+                padding: 16px;
+            }
+
+            .card-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>반응형 웹과 미디어 쿼리</h1>
+        <p>화면 크기에 따라 레이아웃이 바뀌는 웹 페이지를 만든다.</p>
+    </header>
+
+    <main>
+        <section class="description">
+            <h2>반응형 웹이란?</h2>
+            <p>
+                반응형 웹은 PC, 태블릿, 모바일처럼 서로 다른 화면 크기에서도
+                보기 좋은 형태로 레이아웃이 조정되는 웹 페이지를 의미한다.
+            </p>
+            <p>
+                CSS에서는 media query를 사용하여 특정 화면 너비 이하 또는 이상일 때
+                적용할 스타일을 따로 작성할 수 있다.
+            </p>
+        </section>
+
+        <section class="card-list">
+            <article class="card">
+                <h2>HTML</h2>
+                <p>화면의 구조를 만든다.</p>
+            </article>
+            <article class="card">
+                <h2>CSS</h2>
+                <p>화면의 스타일과 배치를 만든다.</p>
+            </article>
+            <article class="card">
+                <h2>JavaScript</h2>
+                <p>화면의 동작을 만든다.</p>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
