@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06_DOM 노드 생성/추가/삭제 Todo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            width: 480px;
+            margin: 60px auto;
+            padding: 24px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .description {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        #todoInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        #addButton {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #222;
+            color: white;
+            cursor: pointer;
+        }
+
+        #todoList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .delete-button {
+            border: none;
+            border-radius: 4px;
+            padding: 6px 10px;
+            background: #e74c3c;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>06_DOM 노드 생성/추가/삭제 Todo</h1>
+        <p class="description">
+            입력값을 읽어 새로운 li 요소를 만들고, 삭제 버튼을 클릭하면 해당 li 요소를 제거한다.
+        </p>
+
+        <div class="input-area">
+            <input type="text" id="todoInput" placeholder="할 일을 입력하세요.">
+            <button id="addButton">추가</button>
+        </div>
+
+        <ul id="todoList"></ul>
+    </div>
+
+    <script>
+        const todoInput = document.querySelector('#todoInput');
+        const addButton = document.querySelector('#addButton');
+        const todoList = document.querySelector('#todoList');
+
+        function createTodoItem(todoText) {
+            // createElement()는 새로운 DOM 요소를 메모리에 생성한다.
+            const li = document.createElement('li');
+            li.classList.add('todo-item');
+
+            const span = document.createElement('span');
+            span.textContent = todoText;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '삭제';
+            deleteButton.classList.add('delete-button');
+            deleteButton.dataset.action = 'delete';
+
+            // append() 는 부모 요소 안에 자식 요소를 추가한다.
+            li.append(span, deleteButton);
+
+            return li;
+        }
+
+        function addTodo() {
+            const todoText = todoInput.value.trim();
+
+            if (todoText === '') {
+                alert('할 일을 입력하세요.');
+                todoInput.focus();
+                return;
+            }
+
+            const li = createTodoItem(todoText);
+            todoList.append(li);
+
+            todoInput.value = '';
+            todoInput.focus();
+        }
+
+        // 추가 버튼 클릭 시 addTodo 함수 호출
+        addButton.addEventListener('click', addTodo);
+
+        // 입력 양식에서 enter 키 입력 시 addTodo 함수 호출
+        todoInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter') addTodo();
+        });
+
+        // 이벤트 위임을 사용하면 새로 추가 된 삭제 버튼에도 같은 방식으로
+        // 이벤트를 처리할 수 있다.
+        todoList.addEventListener('click', e => {
+            // 삭제 버튼이 클릭 된 것이 아닌 경우는 종료
+            if(e.target.dataset.action !== 'delete') return;
+
+            // closest() 는 현재 요소에서 가장 가까운 상위 요소 중 선택자와 일치하는 요소를 찾는다.
+            const todoItem = e.target.closest('.todo-item');
+            todoItem.remove();             
+        });
+    </script>
+</body>
+</html>

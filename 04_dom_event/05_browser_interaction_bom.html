@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>05_브라우저 상호작용과 BOM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        code {
+            background: #f3f3f3;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+        }
+
+        button {
+            margin: 4px;
+            padding: 8px 12px;
+        }
+
+        .message {
+            padding: 12px;
+            background: #f4f6f8;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>05_브라우저 상호작용과 BOM</h1>
+    <p>BOM은 브라우저 창, 주소, 대화상자, 타이머처럼 브라우저 환경에서 제공되는 기능을 다룬다.</p>
+
+    <section>
+        <h2>1. window 객체</h2>
+        <p>
+            <code>window</code>는 브라우저 창을 나타내는 최상위 객체이다.
+            <code>alert()</code>, <code>confirm()</code>, <code>prompt()</code>도 실제로는 <code>window</code>의 기능이다.
+        </p>
+
+        <button id="windowButton">window 확인</button>
+        <p id="windowMessage" class="message">버튼을 클릭해보세요.</p>
+
+        <script>
+            const windowButton = document.querySelector('#windowButton');
+            const windowMessage = document.querySelector('#windowMessage');
+
+            windowButton.addEventListener('click', e => {
+                console.log('window 객체 : ', window);
+                windowMessage.textContent
+                = `현재 창의 너비 : ${window.innerWidth}, 높이 : ${window.innerHeight}`;
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>2. alert, confirm, prompt</h2>
+        <p>
+            브라우저 기본 대화상자는 간단한 확인용으로 사용할 수 있다.
+            다만 디자인을 바꾸기 어렵고 실행 중 화면을 잠시 멈추므로 실제 서비스에서는 필요한 경우에만 사용한다.
+        </p>
+
+        <button id="alertButton">alert 실행</button>
+        <button id="confirmButton">confirm 실행</button>
+        <button id="promptButton">prompt 실행</button>
+        <p id="dialogMessage" class="message">대화상자 실행 결과가 여기에 표시된다.</p>
+
+        <script>
+            const alertButton = document.querySelector('#alertButton');
+            const confirmButton = document.querySelector('#confirmButton');
+            const promptButton = document.querySelector('#promptButton');
+            const dialogMessage = document.querySelector('#dialogMessage');
+
+            alertButton.addEventListener('click', e => {
+                alert('알림창이다.');
+                dialogMessage.textContent = 'alert를 실행했다.';
+            });
+
+            confirmButton.addEventListener('click', e => {
+                const result = confirm('정말 진행할까요?');
+                dialogMessage.textContent = `confirm 결과 : ${result}`;
+            });
+
+            promptButton.addEventListener('click', e => {
+                const name = prompt('이름을 입력하세요');
+
+                if(!name) {
+                    dialogMessage.textContent = 'prompt 입력을 취소했다.';
+                    return;
+                }
+
+                dialogMessage.textContent = `${name}님 안녕하세요~`;
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>3. location 객체</h2>
+        <p>
+            <code>location</code>은 현재 페이지 주소 정보를 가진 객체이다.
+            주소 확인, 페이지 이동, 새로고침에 사용할 수 있다.
+        </p>
+
+        <button id="locationButton">현재 주소 확인</button>
+        <button id="moveButton">예시 주소로 이동</button>
+        <button id="reloadButton">새로고침</button>
+        <p id="locationMessage" class="message">location 실행 결과가 여기에 표시된다.</p>
+
+        <script>
+            const locationButton = document.querySelector('#locationButton');
+            const moveButton = document.querySelector('#moveButton');
+            const reloadButton = document.querySelector('#reloadButton');
+            const locationMessage = document.querySelector('#locationMessage');
+
+            locationButton.addEventListener('click', e => {
+                console.log('location 객체 : ', location);
+                locationMessage.textContent = `현재 주소 : ${location.href}`;
+            });
+
+            moveButton.addEventListener('click', e => {
+                const result = confirm('MDN JavaScript 문서로 이동할까요?');
+
+                if (result) {
+                    location.href = 'https://developer.mozilla.org/ko/docs/Web/JavaScript';
+                }
+            });
+
+            reloadButton.addEventListener('click', e => {
+                const result = confirm('현재 페이지를 새로고침 할까요?');
+
+                if(result) {
+                    location.reload();
+                }
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>4. setTimeout</h2>
+        <p>
+            <code>setTimeout()</code>은 지정한 시간이 지난 뒤 한 번만 함수를 실행한다.
+            시간은 밀리초 단위로 작성한다.
+        </p>
+
+        <button id="timeoutButton">3초 뒤 실행</button>
+        <p id="timeoutMessage" class="message">버튼을 클릭하면 3초 뒤 메시지가 바뀐다.</p>
+
+        <script>
+            const timeoutButton = document.querySelector('#timeoutButton');
+            const timeoutMessage = document.querySelector('#timeoutMessage');
+
+            timeoutButton.addEventListener('click', e => {
+                timeoutMessage.textContent = '3초를 기다리는 중...';
+
+                setTimeout(
+                    () => timeoutMessage.textContent = '3초가 지나 실행되었습니다.'
+                    , 3000
+                );
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>5. setInterval과 clearInterval</h2>
+        <p>
+            <code>setInterval()</code>은 지정한 시간마다 함수를 반복 실행한다.
+            <code>clearInterval()</code>을 사용하면 반복 실행을 멈출 수 있다.
+        </p>
+
+        <button id="startButton">카운트 시작</button>
+        <button id="stopButton">카운트 정지</button>
+        <p id="timerMessage" class="message">카운트: 0</p>
+
+        <script>
+            const startButton = document.querySelector('#startButton');
+            const stopButton = document.querySelector('#stopButton');
+            const timerMessage = document.querySelector('#timerMessage');
+
+            let count = 0;
+            let intervalId = null;
+
+            startButton.addEventListener('click', () => {
+                if (intervalId !== null) return;
+
+                intervalId = setInterval(() => {
+                    count += 1;
+                    timerMessage.textContent = `카운트: ${count}`;
+                }, 1000);
+            });
+
+            stopButton.addEventListener('click', () => {
+                clearInterval(intervalId);
+                intervalId = null;
+            });
+        </script>
+    </section>
+</body>
+</html>

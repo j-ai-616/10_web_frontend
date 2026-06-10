@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_이벤트 핸들러와 이벤트 리스너</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        code {
+            background: #f3f3f3;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+        }
+
+        button {
+            margin: 4px;
+            padding: 8px 12px;
+        }
+
+        .message {
+            padding: 16px;
+            background: #f4f6f8;
+            border-radius: 8px;
+        }
+
+        .active {
+            color: royalblue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>02_이벤트 핸들러와 이벤트 리스너</h1>
+    <p>이벤트는 사용자의 클릭, 입력, 제출 같은 동작이 발생했을 때 실행할 코드를 연결하는 방법이다.</p>
+
+    <section>
+        <h2>1. HTML attribute 방식</h2>
+        <p>
+            HTML 태그의 속성에 직접 이벤트 코드를 작성할 수 있다.
+            다만 HTML과 JavaScript가 섞이므로 간단한 비교용으로만 확인한다.
+        </p>
+
+        <button onclick="handleAttributeClick()">attribute 방식</button>
+        <p id="attributeMessage" class="message">버튼을 클릭해보세요.</p>
+
+        <script>
+            function handleAttributeClick(){
+                const attributeMessage = document.querySelector('#attributeMessage');
+                attributeMessage.textContent = 'HTML attribute 방식으로 등록한 이벤트가 실행 되었다.';
+            }
+        </script>
+    </section>
+
+    <section>
+        <h2>2. DOM property 방식</h2>
+        <p>
+            JavaScript에서 요소의 <code>onclick</code> property에 함수를 대입하여 이벤트를 등록할 수 있다.
+            같은 property에 다시 대입하면 기존 핸들러는 덮어쓴다.
+        </p>
+
+        <button id="propertyButton">property 방식</button>
+        <p id="propertyMessage" class="message">버튼을 클릭해보세요.</p>
+
+        <script>
+            const propertyButton = document.querySelector('#propertyButton');
+
+            propertyButton.onclick = function(){
+                const propertyMessage = document.querySelector('#propertyMessage');
+                propertyMessage.textContent 
+                = 'DOM property 방식으로 등록한 이벤트가 실행되었다.';
+            };
+
+            propertyButton.onclick = function(){
+                console.log('클릭 시 이벤트를 추가하였다.');
+            };
+
+        </script>
+    </section>
+
+    <section>
+        <h2>3. addEventListener 방식</h2>
+        <p>
+            <code>addEventListener()</code>는 이벤트를 등록할 때 가장 자주 사용하는 방식이다.
+            같은 요소의 같은 이벤트에 여러 함수를 등록할 수 있다.
+        </p>
+
+        <button id="listenerButton">addEventListener 방식</button>
+        <p id="listenerMessage" class="message">버튼을 클릭해보세요.</p>
+
+        <script>
+            const listenerButton = document.querySelector('#listenerButton');
+            const listenerMessage = document.querySelector('#listenerMessage');
+            
+            // addEventListener('이벤트타입', 실행할함수)
+            listenerButton.addEventListener('click', function() {
+                listenerMessage.textContent 
+                = 'addEventListener 방식으로 등록한 이벤트가 실행되었다.';
+            });
+
+            listenerButton.addEventListener('click', function(){
+                listenerMessage.classList.add('active');
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>4. 이벤트 핸들러 함수 분리</h2>
+        <p>
+            실행할 코드가 길어지면 이벤트 핸들러 함수를 따로 정의한 뒤 등록하는 것이 좋다.
+            이렇게 작성하면 코드의 역할을 더 쉽게 구분할 수 있다.
+        </p>
+
+        <button id="countButton">카운트 증가</button>
+        <p id="countMessage" class="message">클릭 횟수: 0</p>
+
+        <script>
+            const countButton = document.querySelector('#countButton');
+            const countMessage = document.querySelector('#countMessage');
+
+            let count = 0;
+
+            function increaseCount() {
+                count += 1;
+                countMessage.textContent = `클릭 횟수: ${count}`;
+            }
+
+            countButton.addEventListener('click', increaseCount);
+        </script>
+    </section>
+
+    <section>
+        <h2>5. 이벤트 리스너 제거</h2>
+        <p>
+            <code>removeEventListener()</code>로 이벤트를 제거하려면 등록할 때 사용한 함수와 같은 함수 참조가 필요하다.
+            익명 함수로 등록하면 나중에 제거하기 어렵다.
+        </p>
+
+        <button id="removeTestButton">한 번만 실행</button>
+        <p id="removeMessage" class="message">버튼을 클릭해보세요.</p>
+
+        <script>
+            const removeTestButton = document.querySelector('#removeTestButton');
+            const removeMessage = document.querySelector('#removeMessage');
+
+            function handleOnceClick() {
+                removeMessage.textContent = '이 핸들러는 한 번 실행 된 뒤 제거 되었다.';
+                console.log('한 번만 실행되는 핸들러');
+                // 등록할 때 사용한 함수 이름으로 이벤트 리스너를 제거한다.
+                removeTestButton.removeEventListener('click', handleOnceClick);
+            }
+
+            removeTestButton.addEventListener('click', handleOnceClick);
+
+        </script>
+    </section>
+</body>
+</html>

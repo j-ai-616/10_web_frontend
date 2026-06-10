@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM/Event 종합 실습 - 상품 목록 검색</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="page-header">
+        <h1>DOM/Event 종합 실습 - 상품 목록 검색</h1>
+        <p>JavaScript로 입력값을 읽고 조건에 맞는 상품만 화면에 출력한다.</p>
+    </header>
+
+    <main class="container">
+        <section class="search-panel">
+            <input type="text" id="keywordInput" placeholder="상품명을 입력하세요.">
+            <select id="categorySelect">
+                <option value="all">전체</option>
+                <option value="전자기기">전자기기</option>
+                <option value="생활용품">생활용품</option>
+                <option value="문구">문구</option>
+            </select>
+            <button id="searchButton">검색</button>
+            <button id="resetButton">초기화</button>
+        </section>
+
+        <section>
+            <p id="resultCount" class="result-count"></p>
+            <div id="productList" class="product-list"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

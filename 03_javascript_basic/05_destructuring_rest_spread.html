@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>05_구조 분해 할당, Rest, Spread</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; }
+        code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>05_구조 분해 할당, Rest, Spread</h1>
+    <script>
+        console.group('1. 배열 구조 분해 할당');
+        {
+            const colors = ['red', 'blue', 'green'];
+
+            // 배열 구조 분해 할당은 배열의 요소를 순서대로 변수에 꺼내 담는 문법이다.
+            const [firstColor, secondColor, thirdColor] = colors;
+            console.log(firstColor);
+            console.log(secondColor);
+            console.log(thirdColor);
+
+            // 필요하지 않은 요소는 쉼표로 건너 뛸 수 있다.
+            const [first, , third] = colors;
+            console.log(first);
+            console.log(third);
+
+            // 배열 요소가 없을 때 사용할 기본 값을 지정할 수 있다.
+            const fruits = ['사과'];
+            const [apple, banana = '바나나'] = fruits;
+            console.log(apple);
+            console.log(banana);
+        }
+        console.groupEnd();
+
+        console.group('2. 객체 구조 분해 할당');
+        {
+            const student = {
+                name: '유관순',
+                age: 16,
+                score: 90
+            };
+
+            // 객체 구조 분해 할당은 프로퍼티 이름을 기준으로 값을 꺼내 담는 문법이다.
+            const {name, age, score} = student;
+            console.log(name);
+            console.log(age);
+            console.log(score);
+
+            // 변수명을 바꾸어 받고 싶을 때는 프로퍼티명 : 새 변수명 형태로 작성한다.
+            const {name: studentName, age: studentAge} = student;
+            console.log(studentName);
+            console.log(studentAge);
+
+            // 존재하지 않는 프로퍼티에는 기본 값을 지정할 수 있다.
+            const { grade = '미정' } = student;
+            console.log(grade);
+        }
+        console.groupEnd();
+
+        console.group('3. 중첩 객체 구조 분해 할당');
+        {
+            const user = {
+                id: 'user01',
+                profile: {
+                    nickname: '길동',
+                    email: 'gildong@example.com'
+                }
+            };
+
+            // 객체 안의 객체도 구조 분해 할당으로 꺼낼 수 있다.
+            const {
+                id,
+                profile: {nickname, email}
+            } = user;
+
+            console.log(id);
+            console.log(nickname);
+            console.log(email);
+
+        }
+        console.groupEnd();
+
+        console.group('4. 함수 매개변수 구조 분해 할당');
+        {
+            const product = {
+                name: '키보드',
+                price: 30000,
+                stock: 10
+            };
+
+            // 객체를 매개변수로 받을 때 필요한 프로퍼티만 꺼내 사용할 수 있다.
+            function printProduct({name, price}){
+                console.log(`상품명 : ${name}`);
+                console.log(`가격 : ${price}`);
+            }
+
+            printProduct(product);
+
+            const numbers = [10, 20];
+
+            // 배열도 매개변수에서 구조 분해 할당 할 수 있다.
+            function printPoint([x, y]) {
+                console.log(`x : ${x}`);
+                console.log(`y : ${y}`);
+            }
+
+            printPoint(numbers);
+        }
+        console.groupEnd();
+
+        console.group('5. rest parameter');
+        {
+            // rest parameter는 여러 개의 인수를 배열로 모아 받는 문법이다.
+            function sum(...numbers) {
+                let total = 0;
+
+                for (const number of numbers) {
+                    total += number;
+                }
+
+                return total;
+            }
+            
+            console.log(sum(1, 2));
+            console.log(sum(1, 2, 3, 4, 5));
+            console.log(sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+
+            // 일반 매개변수와 함께 사용할 때 rest parameter는 마지막에 작성해야 한다.
+            function printOrder(userName, ...items) {
+                console.log(`주문자 : ${userName}`);
+                console.log(items);
+            }
+
+            printOrder('홍길동', '노트북');
+            printOrder('유관순', '마우스', '키보드');
+        }
+        console.groupEnd();
+
+        console.group('6. 구조 분해 할당과 rest 문법');
+        {
+            const numbers = [10, 20, 30, 40, 50];
+
+            // 구조 분해 할당에서 rest 문법을 사용하면 남은 요소를 배열로 모을 수 있다.
+            const [first, second, ...others] = numbers;
+            console.log(first);
+            console.log(second);
+            console.log(others);
+
+            const student = {
+                name : '유관순',
+                age: 16,
+                address : '서울시 동작구'
+            };
+
+            const {age, ...studentInfo} = student;
+            console.log(age);
+            console.log(studentInfo);
+        }
+        console.groupEnd();
+
+        console.group('7. spread 문법 - 배열');
+        {
+            const front = ['HTML', 'CSS'];
+            const script = ['JavaScript'];
+
+            // spread 문법은 배열의 요소를 펼쳐서 사용할 때 쓴다.
+            const skills = [...front, ...script];
+            console.log(skills);
+
+            // 기존 배열을 유지하면서 새 요소가 추가 된 배열을 만들 수 있다.
+            const newSkills = [...skills, 'DOM', 'Event'];
+            console.log(newSkills);
+
+            const scores = [80, 90, 70];
+
+            console.log(Math.max(scores));
+            console.log(Math.max(80, 90, 70));
+            // Math.max()처럼 여러 인수를 받는 함수에 배열 값을 펼쳐 전달할 수 있다.
+            console.log(Math.max(...scores));
+        }
+        console.groupEnd();
+
+        console.group('8. spread 문법 - 객체');
+        {
+            const product = {
+                id: 1,
+                name: '키보드',
+                price: 30000
+            };
+
+            // 객체에서도 spread 문법을 사용하여 기존 프로퍼티를 펼칠 수 있다.
+            const copiedProduct = { ...product };
+            console.log(copiedProduct);
+
+            // 기존 객체를 유지하면서 일부 값만 바꾼 새 객체를 만들 수 있다.
+            const saleProduct = {
+                ...product,
+                price: 25000,
+                isSale: true
+            };
+            console.log(saleProduct);
+
+            const stockInfo = {
+                stock : 10,
+                status : '판매중'
+            };
+
+            // 여러 객체의 프로퍼티를 합쳐 하나의 객체를 만들 수 있다.
+            const productDetail = {
+                ...product,
+                ...stockInfo
+            };
+            console.log(productDetail);
+        }
+        console.groupEnd();
+
+        console.group('9. 상품 데이터 가공');
+        {
+            const products = [
+                { id: 1, name: '노트북', price: 1200000, category: '전자기기' },
+                { id: 2, name: '키보드', price: 80000, category: '전자기기' },
+                { id: 3, name: '텀블러', price: 15000, category: '생활용품' }
+            ];
+
+            // map()과 spread 문법을 함께 사용하면 원본 데이터는 유지하면서 
+            // 새 데이터를 가공해서 만들 수 있다.
+            const saleProducts = products.map(product => ({
+                ...product,
+                salePrice: Math.floor(product.price * 0.9)
+            }));
+
+            console.log(saleProducts);
+
+            // 구조 분해 할당을 사용하면 객체 배열에서 필요한 값만 꺼내기 쉽다.
+            saleProducts.forEach(({name, price, salePrice}) => {
+                console.log(`${name} / 정가: ${price} / 할인가: ${salePrice}`);
+            });
+
+            // filter()와 구조 분해 할당을 함께 사용해 조건에 맞는 데이터만 고를 수 있다.
+            const electronicProducts 
+            = products.filter(({category}) => category === '전자기기');
+            console.log(electronicProducts);
+        }
+        console.groupEnd();
+    </script>
+</body>
+</html>

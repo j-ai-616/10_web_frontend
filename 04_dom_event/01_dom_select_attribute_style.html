@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01_DOM 요소 선택과 속성/스타일 조작</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        code {
+            background: #f3f3f3;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+        }
+
+        .box {
+            width: 160px;
+            height: 100px;
+            border: 1px solid #222;
+            margin-top: 12px;
+            padding: 12px;
+        }
+
+        .circle {
+            border-radius: 50%;
+        }
+
+        .gray {
+            background: lightgray;
+        }
+
+        .yellow {
+            background: yellow;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: royalblue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>01_DOM 요소 선택과 속성/스타일 조작</h1>
+
+    <section>
+        <h2>1. CSS 선택자를 이용한 요소 선택</h2>
+        <p>
+            DOM 요소를 조작하려면 먼저 원하는 HTML 요소를 선택해야 한다.
+            CSS 선택자와 연결하기 쉬운 <code>querySelector()</code>, <code>querySelectorAll()</code>을 중심으로 사용한다.
+        </p>
+
+        <div id="compareBox" class="box">비교 대상 박스</div>
+
+        <div class="area">
+            <p>first area</p>
+        </div>
+        <div class="area">
+            <p>second area</p>
+        </div>
+
+        <ul id="foodList">
+            <li class="food">김치찌개</li>
+            <li class="food">된장찌개</li>
+            <li class="drink">커피</li>
+            <li class="drink">콜라</li>
+        </ul>
+
+        <script>
+            // getElementId()는 id를 기준으로 하나의 요소를 선택한다.
+            const compareBoxById = document.getElementById('compareBox');
+
+            // querySelector()는 CSS 선택자로 조건에 맞는 첫번째 요소를 선택한다.
+            const compareBoxBySelector = document.querySelector('#compareBox');
+
+            console.log('getElementById 결과', compareBoxById);
+            console.log('querySelector 결과', compareBoxBySelector);
+            console.log('두 방식으로 선택한 요소가 같은가?', 
+            compareBoxById === compareBoxBySelector);
+
+            // 같은 클래스가 여러 개 있어도 querySelector()는 첫번째 요소만 반환한다.
+            const firstArea = document.querySelector('.area');
+            console.log('querySelector 결과', firstArea);
+
+            // querySelectorAll()은 조건에 맞는 모든 요소를 NodeList로 반환한다.
+            const areas = document.querySelectorAll('.area');
+            console.log('querySelectorAll 결과', areas);
+
+            // 클래스가 food인 요소들을 선택
+            const allFoods = document.querySelectorAll('#foodList .food');
+            console.log('allFoods', allFoods);
+
+            // NodeList는 forEach()로 순회할 수 있다.
+            allFoods.forEach(function (food) {
+                food.classList.add('highlight');
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>2. 내용 변경</h2>
+        <p>
+            <code>textContent</code>는 요소 안의 텍스트를 변경하고,
+            <code>innerHTML</code>은 HTML 태그를 포함한 내용을 변경할 수 있다.
+        </p>
+
+        <p id="textTarget">기존 텍스트</p>
+        <div id="htmlTarget">기존 HTML 영역</div>
+
+        <script>
+            const textTarget = document.querySelector('#textTarget');
+            const htmlTarget = document.querySelector('#htmlTarget');
+
+            console.log(textTarget.textContent);
+            console.log(htmlTarget.innerHTML);
+
+            textTarget.textContent = '<strong>textContent</strong>로 변경한 텍스트이다.';
+            htmlTarget.innerHTML = '<strong>innerHTML</strong>로 변경한 내용이다.';
+        </script>
+    </section>
+
+    <section>
+        <h2>3. HTML Attribute와 DOM Property</h2>
+        <p>
+            HTML Attribute는 HTML에 작성된 초기값에 가깝고,
+            DOM Property는 JavaScript가 현재 다루는 최신 상태에 가깝다.
+        </p>
+
+        <label for="username">사용자명</label>
+        <input type="text" id="username" value="user01">
+
+        <script>
+            const usernameInput = document.querySelector('#username');
+
+            console.log('초기 value attribute', usernameInput.getAttribute('value'));
+            console.log('초기 value property', usernameInput.value);
+
+            // setAttribute()는 HTML attribute 값을 변경한다.
+            usernameInput.setAttribute('value', 'attribute-user');
+            console.log('변경 후 value attribute', usernameInput.getAttribute('value'));
+            console.log('변경 후 value property', usernameInput.value);
+
+            // value property는 현재 입력 요소의 값을 변경한다.
+            usernameInput.value = 'property-user';
+            console.log('변경 후 value attribute', usernameInput.getAttribute('value'));
+            console.log('변경 후 value property', usernameInput.value);
+        </script>
+    </section>
+
+    <section>
+        <h2>4. data attribute와 dataset</h2>
+        <p>
+            <code>data-*</code> 속성은 HTML 요소에 사용자 정의 데이터를 저장할 때 사용한다.
+            JavaScript에서는 <code>dataset</code>으로 접근한다.
+        </p>
+
+        <ul id="boardList">
+            <li data-board-id="13" data-category="맛집">망원 맛집 추천 부탁</li>
+            <li data-board-id="12" data-category="운동">한강에서 달리실 분</li>
+            <li data-board-id="11" data-category="재테크">요즘 재테크 어떻게 하나요</li>
+        </ul>
+
+        <script>
+            // querySelectorAll() 결과를 배열 메서드와 함께 사용하기 위해
+            // Array.from()으로 배열로 변환한다.
+            const boards = Array.from(
+                document.querySelectorAll('#boardList li'));
+
+            boards.forEach(function (board) {
+                console.log('게시글 dataset', board.dataset);
+            });
+
+            // dataset으로 data-* 값을 추가하거나 변경할 수 있다.
+            const targetBoard = boards.find(board => board.dataset.boardId === '12');
+            console.log('targetBoard', targetBoard);
+            targetBoard.dataset.status = 'selected';
+        
+        </script>
+    </section>
+
+    <section>
+        <h2>5. 인라인 스타일과 classList</h2>
+        <p>
+            JavaScript로 직접 스타일을 변경할 수도 있지만,
+            여러 스타일을 함께 제어할 때는 클래스를 추가/삭제하는 방식이 더 관리하기 쉽다.
+        </p>
+
+        <div id="styleBox" class="box">스타일 변경 대상</div>
+
+        <script>
+            const styleBox = document.querySelector('#styleBox');
+
+            // style 속성은 요소의 인라인 스타일을 직접 변경한다.
+            styleBox.style.backgroundColor = 'skyblue';
+            styleBox.style.border = '4px solid royalblue';
+
+            // classList.add()는 CSS 클래스를 추가한다.
+            styleBox.classList.add('circle');
+            console.log('클래스 목록', styleBox.classList);
+
+            // classList.toggle()은 클래스가 없으면 추가하고 있으면 제거한다.
+            styleBox.classList.toggle('circle');
+            styleBox.classList.toggle('circle');
+        </script>
+    </section>
+</body>
+</html>

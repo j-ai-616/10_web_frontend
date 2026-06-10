@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01_동기 비동기 콜백</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; }
+        code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; }
+        section { margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
+        button { margin: 4px; padding: 8px 12px; }
+        .message { padding: 12px; background: #f4f6f8; border-radius: 8px; }
+        pre { padding: 12px; background: #f7f7f7; border-radius: 8px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>01_동기 처리, 비동기 처리, 콜백 함수</h1>
+
+    <section>
+        <h2>1. 동기 처리</h2>
+        <p>
+            동기 처리는 앞 작업이 끝나야 다음 작업이 실행되는 방식이다.
+            일반적인 JavaScript 코드는 위에서 아래로 한 줄씩 실행되므로 기본 흐름은 동기 처리로 이해할 수 있다.
+        </p>
+        <p>
+            아래 버튼을 클릭하면 1번, 2번, 3번 작업이 작성된 순서 그대로 실행된다.
+        </p>
+        <button id="syncButton">동기 실행 확인</button>
+        <pre id="syncResult">버튼을 클릭하면 실행 순서가 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>2. 비동기 처리</h2>
+        <p>
+            비동기 처리는 시간이 걸리는 작업을 기다리는 동안 다음 코드가 먼저 실행될 수 있는 방식이다.
+            <code>setTimeout()</code>은 지정한 시간이 지난 뒤 함수를 실행하는 대표적인 비동기 함수이다.
+        </p>
+        <p>
+            아래 예제에서는 2번 작업을 3초 뒤 실행하도록 예약한다.
+            그래서 코드 작성 순서는 1번, 2번, 3번이지만 실제 출력은 1번, 3번, 2번 순서가 된다.
+        </p>
+        <button id="asyncButton">비동기 실행 확인</button>
+        <pre id="asyncResult">버튼을 클릭하면 실행 순서가 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>3. 콜백 함수</h2>
+        <p>
+            콜백 함수는 다른 함수에 인자로 전달되어 나중에 실행되는 함수이다.
+            비동기 작업에서는 작업이 끝난 뒤 실행해야 하는 코드를 콜백으로 전달할 수 있다.
+        </p>
+        <p>
+            아래 예제는 1초 뒤 숫자를 10 증가시키고, 증가된 결과를 콜백 함수로 전달한다.
+        </p>
+        <button id="callbackButton">콜백 실행</button>
+        <pre id="callbackResult">버튼을 클릭하면 결과가 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>4. 콜백 중첩 문제</h2>
+        <p>
+            콜백은 간단한 비동기 작업에는 사용할 수 있지만,
+            여러 비동기 작업을 순서대로 연결하면 함수가 계속 안쪽으로 중첩된다.
+        </p>
+        <p>
+            아래 코드는 결과를 받은 뒤 다시 다음 비동기 작업을 실행해야 하므로 콜백이 계속 깊어진다.
+            이런 구조가 많아지면 코드의 흐름과 에러 처리를 이해하기 어려워진다.
+        </p>
+        <button id="hellButton">콜백 중첩 실행</button>
+        <pre id="hellResult">버튼을 클릭하면 결과가 순서대로 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+</body>
+</html>

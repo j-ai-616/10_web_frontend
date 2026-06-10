@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04_이벤트 전파와 이벤트 위임</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        code {
+            background: #f3f3f3;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+        }
+
+        ul {
+            padding: 16px 24px;
+            background: #eef5ff;
+        }
+
+        li {
+            margin: 6px 0;
+            padding: 8px;
+            background: #ffe4e4;
+            cursor: pointer;
+        }
+
+        .highlight {
+            font-weight: bold;
+            text-decoration: underline;
+            color: royalblue;
+        }
+
+        .notice {
+            padding: 12px;
+            background: #f4f6f8;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>04_이벤트 전파와 이벤트 위임</h1>
+    <p>이벤트는 실제 클릭한 요소에서 끝나지 않고 부모 요소로 전달될 수 있다.</p>
+
+    <section>
+        <h2>1. 이벤트 버블링</h2>
+        <p>
+            자식 요소에서 발생한 이벤트가 부모 요소로 전파되는 현상을 이벤트 버블링이라고 한다.
+            실제 화면 구현에서는 이 동작을 이해해야 이벤트 위임을 사용할 수 있다.
+        </p>
+
+        <ul id="drinkList">
+            <li>커피</li>
+            <li>우유</li>
+            <li>콜라</li>
+        </ul>
+
+        <script>
+            const drinkList = document.querySelector('#drinkList');
+
+            drinkList.addEventListener('click', e => {
+                // target: 실제 이벤트가 발생한 요소
+                console.log('target:', e.target);
+                // currentTarget: 이벤트 리스너가 등록된 요소
+                console.log('currentTarget:', e.currentTarget);
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>2. 이벤트 위임</h2>
+        <p>
+            여러 자식 요소에 각각 이벤트를 등록하지 않고,
+            공통 부모 요소에 이벤트를 한 번만 등록해 처리할 수 있다.
+            이를 이벤트 위임이라고 한다.
+        </p>
+
+        <ul id="foodList">
+            <li>김치찌개</li>
+            <li>된장찌개</li>
+            <li>고등어구이</li>
+        </ul>
+
+        <script>
+            const foodList = document.querySelector('#foodList');
+
+            foodList.addEventListener('click', e => {
+                if(!e.target.matches('li')) return;
+
+                e.target.classList.toggle('highlight');
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>3. 브라우저 기본 동작 막기</h2>
+        <p>
+            링크 이동, 폼 제출, 체크박스 선택처럼 브라우저가 기본적으로 수행하는 동작이 있다.
+            <code>preventDefault()</code>를 사용하면 기본 동작을 막을 수 있다.
+        </p>
+
+        <a id="naverLink" href="https://www.naver.com">클릭해도 이동하지 않는 링크</a>
+        <br><br>
+        <label>
+            <input type="checkbox" id="blockedCheckbox">
+            클릭해도 체크되지 않는 체크박스
+        </label>
+        <p class="notice" id="defaultMessage">링크나 체크박스를 클릭해보세요.</p>
+
+        <script>
+            const naverLink = document.querySelector('#naverLink');
+            const blockedCheckbox = document.querySelector('#blockedCheckbox');
+            const defaultMessage = document.querySelector('#defaultMessage');
+
+            naverLink.addEventListener('click', e => {
+                e.preventDefault();
+                defaultMessage.textContent = '링크 이동 기본 동작을 막았다.';
+            });
+
+            blockedCheckbox.addEventListener('click', e => {
+                e.preventDefault();
+                defaultMessage.textContent = '체크 박스 기본 동작을 막았다.';
+            });
+
+        </script>
+    </section>
+
+    <section>
+        <h2>4. 이벤트 전파 막기</h2>
+        <p>
+            <code>stopPropagation()</code>을 사용하면 이벤트가 부모 요소로 전파되는 것을 막을 수 있다.
+            자주 쓰는 문법은 아니지만 이벤트 흐름을 이해하기 위해 확인한다.
+        </p>
+
+        <ul id="colorList">
+            <li id="specialItem">이 항목은 파란색으로 변경되고 부모 이벤트로 전달되지 않는다.</li>
+            <li>이 항목은 빨간색으로 변경된다.</li>
+            <li>이 항목도 빨간색으로 변경된다.</li>
+        </ul>
+
+        <p class="notice" id="propagationMessage">항목을 클릭해보세요.</p>
+
+        <script>
+            const colorList = document.querySelector('#colorList');
+            const specialItem = document.querySelector('#specialItem');
+            const propagationMessage = document.querySelector('#propagationMessage');
+
+            colorList.addEventListener('click', e => {
+                if (e.target.matches('li')) {
+                    e.target.style.color = 'red';
+                    propagationMessage.textContent = '부모 요소에 등록한 이벤트가 실행 되었다.';
+                }
+            });
+
+            specialItem.addEventListener('click', e => {
+                e.stopPropagation();
+                e.target.style.color = 'blue';
+                propagationMessage.textContent = '자식 요소에서 이벤트 전파를 막았다.';
+            });
+        </script>
+    </section>
+</body>
+</html>

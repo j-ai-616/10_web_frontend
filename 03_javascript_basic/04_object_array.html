@@ -110,6 +110,8 @@
             // 객체 프로퍼티 수정은 문제 없다.
             // dog = {};
         }
+        console.groupEnd();
+
 
         console.group('4. 객체 단축 문법과 in, for ...in');
         {
@@ -325,11 +327,11 @@
             console.log(`max : ${max}`);
 
             // some()은 하나라도 조건을 만족하면 true를 반환한다.
-            let result = [1, 5, 4, 3, 2].some(item => item > 10);
+            let result = [1, 5, 4, 3, 2].some(item => item > 4);
             console.log(result);
 
             // every()는 모든 요소가 조건을 만족해야 true를 반환한다.
-            result = [1, 5, 4, 3, 2].every(item => item > 0);
+            result = [1, 5, 4, 3, 2].every(item => item > 3);
             console.log(result);
 
             const students = [

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_Promise와 async await</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; }
+        code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; }
+        section { margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
+        button { margin: 4px; padding: 8px 12px; }
+        .message { padding: 12px; background: #f4f6f8; border-radius: 8px; }
+        pre { padding: 12px; background: #f7f7f7; border-radius: 8px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>02_Promise와 async/await</h1>
+    <p>
+        이 파일에서는 콜백 중첩 문제를 줄이기 위해 사용하는 Promise와,
+        Promise 코드를 더 읽기 쉽게 작성하는 async/await 문법을 확인한다.
+    </p>
+
+    <section>
+        <h2>1. Promise 생성과 상태</h2>
+        <p>
+            Promise는 비동기 작업의 성공 또는 실패 결과를 표현하는 객체이다.
+            작업이 끝나기 전에는 <code>pending</code>, 성공하면 <code>fulfilled</code>, 실패하면 <code>rejected</code> 상태가 된다.
+        </p>
+        <p>
+            Promise 안에서는 성공 결과를 <code>resolve()</code>로 전달하고,
+            실패 결과를 <code>reject()</code>로 전달한다.
+        </p>
+        <button id="promiseButton">Promise 실행</button>
+        <pre id="promiseResult">버튼을 클릭하면 Promise 처리 결과가 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>2. then/catch 체이닝</h2>
+        <p>
+            <code>then()</code>은 Promise가 성공했을 때 실행할 코드를 작성한다.
+            <code>catch()</code>는 중간에 실패가 발생했을 때 실행할 코드를 작성한다.
+        </p>
+        <p>
+            <code>then()</code> 안에서 다시 Promise를 반환하면 다음 <code>then()</code>으로 결과를 이어갈 수 있다.
+            이를 Promise 체이닝이라고 한다.
+        </p>
+        <button id="chainButton">then/catch 실행</button>
+        <pre id="chainResult">버튼을 클릭하면 결과가 순서대로 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>3. async/await</h2>
+        <p>
+            <code>async/await</code>는 Promise 기반 비동기 코드를 더 읽기 쉽게 작성하기 위한 문법이다.
+            <code>async</code>가 붙은 함수 안에서 <code>await</code>를 사용할 수 있다.
+        </p>
+        <p>
+            <code>await</code>는 Promise가 처리될 때까지 기다린 뒤 성공 결과를 반환한다.
+            그래서 비동기 코드를 위에서 아래로 실행되는 코드처럼 읽을 수 있다.
+        </p>
+        <button id="asyncAwaitButton">async/await 실행</button>
+        <pre id="asyncAwaitResult">버튼을 클릭하면 결과가 순서대로 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>4. then 방식과 async/await 방식 비교</h2>
+        <p>
+            두 방식 모두 Promise를 처리하는 문법이다.
+            <code>then()</code>은 Promise 흐름을 메서드 체이닝으로 직접 연결하는 방식이고,
+            <code>async/await</code>는 같은 흐름을 순서대로 읽히도록 작성하는 방식이다.
+        </p>
+        <p>
+            수업에서는 두 방식을 모두 확인하되, 이후 API 통신 예제에서는 실무 코드에서 자주 사용하는
+            <code>async/await</code> 중심으로 작성한다.
+        </p>
+    </section>
+</body>
+</html>

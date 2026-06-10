@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04_axios API 요청</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 24px; }
+        code { background: #f3f3f3; padding: 2px 6px; border-radius: 4px; }
+        section { margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
+        button { margin: 4px; padding: 8px 12px; }
+        .message { padding: 12px; background: #f4f6f8; border-radius: 8px; }
+        pre { padding: 12px; background: #f7f7f7; border-radius: 8px; white-space: pre-wrap; }
+        ul { padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>04_axios API 요청</h1>
+    <p>
+        axios는 HTTP 요청을 쉽게 처리하기 위한 외부 라이브러리이다.
+        브라우저 기본 기능은 아니므로 CDN이나 npm을 통해 추가해야 한다.
+    </p>
+    <p>
+        이 파일에서는 axios의 기본 GET 요청, params 전달, POST 요청, 공통 설정을 확인하고
+        fetch와 어떤 점이 다른지 비교한다.
+    </p>
+
+    <section>
+        <h2>1. axios 기본 GET 요청</h2>
+        <p>
+            axios는 응답 본문을 자동으로 JavaScript 객체로 변환해준다.
+            따라서 <code>fetch()</code>처럼 직접 <code>response.json()</code>을 호출하지 않아도 된다.
+        </p>
+        <p>
+            axios 응답 객체에는 여러 정보가 들어 있으며, 실제 응답 본문은 <code>response.data</code>에 들어 있다.
+        </p>
+        <button id="axiosButton">댓글 요청</button>
+        <pre id="axiosResult">버튼을 클릭하면 댓글 정보가 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>2. axios params와 fetch URLSearchParams 비교</h2>
+        <p>
+            쿼리스트링은 URL 뒤에 <code>?postId=1</code>처럼 붙는 요청 조건이다.
+            axios는 <code>params</code> 객체를 사용하면 쿼리스트링을 직접 문자열로 만들지 않아도 된다.
+        </p>
+        <p>
+            fetch에서는 직접 URL에 붙이거나 <code>URLSearchParams</code>를 사용해야 한다.
+            이 차이를 보면 axios가 요청 설정을 객체 형태로 관리하기 편하다는 점을 확인할 수 있다.
+        </p>
+        <button id="compareButton">fetch와 axios 비교 실행</button>
+        <pre id="compareResult">버튼을 클릭하면 두 요청 결과가 비교되어 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>3. axios POST 요청</h2>
+        <p>
+            axios로 데이터를 보낼 때는 두 번째 인자에 보낼 객체를 전달한다.
+            axios는 객체를 JSON 문자열로 변환하고, 기본적인 JSON 요청 헤더도 비교적 편하게 처리해준다.
+        </p>
+        <button id="axiosPostButton">axios 게시글 등록 요청</button>
+        <pre id="axiosPostResult">버튼을 클릭하면 POST 요청 결과가 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>4. axios 인스턴스와 공통 설정</h2>
+        <p>
+            실제 프로젝트에서는 같은 서버 주소로 여러 API를 요청하는 경우가 많다.
+            이때 axios 인스턴스를 만들면 <code>baseURL</code>, <code>timeout</code>, 공통 헤더 등을 한 번에 설정할 수 있다.
+        </p>
+        <p>
+            아래 예제는 <code>baseURL</code>을 미리 설정해두고, 요청할 때는 <code>/users/1</code>처럼 경로만 작성한다.
+        </p>
+        <button id="instanceButton">axios 인스턴스 요청</button>
+        <pre id="instanceResult">버튼을 클릭하면 사용자 상세 정보가 표시된다.</pre>
+
+        <script>
+
+        </script>
+    </section>
+
+    <section>
+        <h2>5. fetch와 axios의 차이 정리</h2>
+        <p>둘 다 API 요청에 사용할 수 있지만 기본 사용 방식에 차이가 있다.</p>
+        <ul>
+            <li><code>fetch()</code>는 브라우저 기본 기능이므로 별도 라이브러리가 필요 없다.</li>
+            <li>axios는 외부 라이브러리이므로 CDN 또는 패키지 설치가 필요하다.</li>
+            <li><code>fetch()</code>는 응답 본문을 직접 <code>response.json()</code>으로 변환해야 한다.</li>
+            <li>axios는 응답 본문을 <code>response.data</code>로 바로 사용할 수 있다.</li>
+            <li><code>fetch()</code>는 HTTP 오류 상태를 직접 <code>response.ok</code>로 확인하는 코드가 필요하다.</li>
+            <li>axios는 400번대, 500번대 응답을 기본적으로 에러로 처리해 <code>catch</code>에서 다루기 쉽다.</li>
+            <li>axios는 <code>params</code>, <code>baseURL</code>, <code>timeout</code> 같은 요청 설정을 객체 형태로 관리하기 편하다.</li>
+        </ul>
+    </section>
+</body>
+</html>

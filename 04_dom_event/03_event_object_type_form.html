@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03_이벤트 객체와 폼 이벤트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        code {
+            background: #f3f3f3;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+        }
+
+        .box {
+            width: 180px;
+            height: 100px;
+            margin-top: 12px;
+            padding: 16px;
+            background: #eef5ff;
+            border: 1px solid #99bce8;
+        }
+
+        .focused {
+            outline: 3px dashed orange;
+            background: #fff7df;
+        }
+
+        form label {
+            display: inline-block;
+            width: 80px;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            vertical-align: top;
+        }
+
+        .message {
+            padding: 12px;
+            background: #f4f6f8;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>03_이벤트 객체와 폼 이벤트</h1>
+    <p>이벤트 객체에는 이벤트가 발생한 요소, 입력값, 키보드 정보 같은 세부 정보가 담긴다.</p>
+
+    <section>
+        <h2>1. 이벤트 객체</h2>
+        <p>
+            이벤트가 발생하면 브라우저는 이벤트 정보를 담은 객체를 만들고,
+            이벤트 핸들러의 첫 번째 매개변수로 전달한다.
+        </p>
+
+        <button id="eventButton">이벤트 객체 확인</button>
+        <p id="eventMessage" class="message">버튼을 클릭해보세요.</p>
+
+        <script>
+            const eventButton = document.querySelector('#eventButton');
+            eventButton.addEventListener('click', function(event){
+                // console.log(event);
+
+                // event.target은 실제 이벤트가 발생한 요소이다.
+                console.log('event.target', event.target);
+
+                // event.currentTarget은 이벤트 핸들러가 등록 된 요소이다.
+                console.log('event.currentTarget', event.currentTarget);
+
+                const eventMessage = document.querySelector('#eventMessage');
+                eventMessage.textContent = `클릭한 요소 : ${event.target.tagName}`;
+
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>2. 마우스 이벤트</h2>
+        <p>마우스 클릭, 더블 클릭, 마우스 진입/이탈 등은 모두 이벤트로 처리할 수 있다.</p>
+
+        <button id="mouseButton">마우스 이벤트 확인</button>
+        <div class="box" id="mouseBox">마우스를 올려보세요.</div>
+
+        <script>
+            const mouseButton = document.querySelector('#mouseButton');
+            const mouseBox = document.querySelector('#mouseBox');
+
+            mouseButton.addEventListener('click', function(event){
+                console.log(`click: button=${event.button}`);
+            });
+            mouseButton.addEventListener('dblclick', function(){
+                console.log('더블 클릭 이벤트가 발생했다.');
+            });
+
+            mouseBox.addEventListener('mouseover', function(event){
+                event.target.textContent = '마우스가 들어왔다.';
+            });
+            mouseBox.addEventListener('mouseout', function(event){
+                event.target.textContent = '마우스가 나갔다.';
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>3. 키보드 이벤트</h2>
+        <p>
+            키보드 입력은 <code>keydown</code>, <code>keyup</code> 이벤트로 확인할 수 있다.
+            입력된 실제 문자는 <code>event.key</code>로 확인한다.
+        </p>
+
+        <input type="text" id="keyboardInput" placeholder="아무 키나 입력하세요">
+        <p class="message" id="keyboardMessage">입력한 키 정보가 여기에 표시된다.</p>
+
+        <script>
+            const keyboardInput = document.querySelector('#keyboardInput');
+            const keyboardMessage = document.querySelector('#keyboardMessage');
+
+            keyboardInput.addEventListener('keydown', function(event){
+                keyboardMessage.textContent 
+                = `keydown: key=${event.key}, code=${event.code}`;
+                console.log(`keydown: key=${event.key}, code=${event.code}`);
+            });
+            keyboardInput.addEventListener('keyup', function(event){
+                console.log(`keyup: key=${event.key}, code=${event.code}`);
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>4. 사용자 입력 양식 이벤트</h2>
+        <p>
+            폼 요소는 값을 입력하거나, 선택하거나, 포커스를 얻고 잃을 때 다양한 이벤트가 발생한다.
+        </p>
+
+        <form id="memberForm">
+            <label for="username">이름</label>
+            <input type="text" name="username" id="username" value="홍길동">
+            <br>
+
+            <label>성별</label>
+            <input type="radio" name="gender" id="male" value="m" checked>
+            <label for="male">남자</label>
+            <input type="radio" name="gender" id="female" value="f">
+            <label for="female">여자</label>
+            <br>
+
+            <label for="age">나이</label>
+            <select id="age" name="age">
+                <option value="10">10대 이하</option>
+                <option value="20">20대</option>
+                <option value="30">30대</option>
+                <option value="40">40대</option>
+                <option value="50">50대</option>
+                <option value="60">60대 이상</option>
+            </select>
+            <br>
+
+            <label for="introduce">자기소개</label>
+            <textarea name="introduce" id="introduce" rows="5" cols="40" maxlength="100">저를 소개합니다.</textarea>
+            <span id="textCount">0</span>/100자
+        </form>
+
+        <script>
+            const memberForm = document.querySelector('#memberForm');
+            const username = document.querySelector('#username');
+            const age = document.querySelector('#age');
+            const introduce = document.querySelector('#introduce');
+            const textCount = document.querySelector('#textCount');
+
+            console.log('form 요소', memberForm);
+            console.log('form elements', memberForm.elements);
+
+            // focus는 입력 요소에 커서가 들어 왔을 때 발생한다.
+            username.addEventListener('focus', e => e.target.classList.add('focused'));
+
+            // blur는 입력 요소에서 커서가 빠져 나왔을 때 발생한다.
+            username.addEventListener('blur', e => e.target.classList.remove('focused'));
+
+            // change는 select, radio, checkbox 등에서 값 선택이 바뀔 때 자주 사용한다.
+            age.addEventListener('change', e => console.log('선택한 나이', e.target.value));
+
+            // input은 입력 값이 바뀔 때마다 발생하므로 글자 수 세기 같은 기능에 적합하다.
+            introduce.addEventListener('input', e => {
+                textCount.textContent = e.target.value.trim().length;
+            });
+        </script>
+    </section>
+
+    <section>
+        <h2>5. 폼 제출 이벤트</h2>
+        <p>
+            <code>submit</code> 이벤트는 폼을 서버로 전송하기 전에 입력값을 검증할 때 자주 사용한다.
+        </p>
+
+        <form id="searchForm" action="https://search.naver.com/search.naver">
+            <input type="text" name="query" placeholder="검색 키워드 입력">
+            <button type="submit">검색</button>
+        </form>
+        <p id="submitMessage" class="message">검색어를 입력한 뒤 검색 버튼을 눌러보세요.</p>
+
+        <script>
+            const searchForm = document.querySelector('#searchForm');
+            const submitMessage = document.querySelector('#submitMessage');
+
+            searchForm.addEventListener('submit', e => {
+                const keyword 
+                = event.currentTarget.querySelector('input[name=query]').value.trim();
+
+                if(keyword === '') {
+                    // preventDefault() 는 폼 제출처럼 브라우저가 기본으로 수행하는 동작을 막는다.
+                    e.preventDefault();
+                    submitMessage.textContent = '검색어를 입력해야 제출할 수 있다.';
+                    return;
+                }
+
+                // 실제 이동은 하지 않도록 조치
+                // e.preventDefault();
+                submitMessage.textContent = `검색어 : ${keyword}`;
+            });
+        </script>
+    </section>
+</body>
+</html>
