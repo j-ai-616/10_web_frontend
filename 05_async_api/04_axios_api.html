@@ -39,7 +39,31 @@
         <pre id="axiosResult">버튼을 클릭하면 댓글 정보가 표시된다.</pre>
 
         <script>
+            const axiosButton = document.querySelector('#axiosButton');
+            const axiosResult = document.querySelector('#axiosResult');
 
+            async function getComments(){
+                try {
+                    const response = await axios.get('https://jsonplaceholder.typicode.com/comments', {
+                        params: {
+                            postId : 1
+                        }
+                    });
+                    console.log(response);
+                    console.log(response.data);
+
+                    const comments = response.data;
+
+                    axiosResult.textContent = comments
+                                                .map(comment => `작성자 : ${comment.email}\n내용: ${comment.body}`)
+                                                .join('\n-----\n');
+                } catch (error) {
+                    axiosResult.textContent = 'API 요청 중 문제가 발생했습니다. 콘솔을 확인해주세요.';
+                    console.log(error);
+                }
+            }
+
+            axiosButton.addEventListener('click', getComments);
         </script>
     </section>
 
@@ -57,7 +81,33 @@
         <pre id="compareResult">버튼을 클릭하면 두 요청 결과가 비교되어 표시된다.</pre>
 
         <script>
+            const compareButton = document.querySelector('#compareButton');
+            const compareResult = document.querySelector('#compareResult');
 
+            async function compareFetchAndAxios(){
+                compareResult.textContent = 'fetch와 axios 요청을 실행하는 중입니다.';
+
+                try {
+                    const params = new URLSearchParams({ postId : 1 })
+                    const fetchResponse = await fetch(`https://jsonplaceholder.typicode.com/comments?${params.toString()}`);
+                    if(!fetchResponse.ok) throw Error(`HTTP 오류 : ${fetchResponse.status}`);
+                    const fetchData = await fetchResponse.json();
+
+                    const axiosResponse = await axios.get('https://jsonplaceholder.typicode.com/comments', {
+                        params: {
+                            postId : 1
+                        }
+                    });
+                    const axiosData = axiosResponse.data;
+
+                    compareResult.textContent = `fetch 결과 개수 : ${fetchData.length}, axios 결과 개수 : ${axiosData.length}`;
+                } catch (error) {
+                    compareResult.textContent = 'API 요청 중 문제가 발생했습니다. 콘솔을 확인해주세요.';
+                    console.log(error);
+                }
+            }
+
+            compareButton.addEventListener('click', compareFetchAndAxios);
         </script>
     </section>
 
@@ -71,7 +121,31 @@
         <pre id="axiosPostResult">버튼을 클릭하면 POST 요청 결과가 표시된다.</pre>
 
         <script>
+            const axiosPostButton = document.querySelector('#axiosPostButton')
+            const axiosPostResult = document.querySelector('#axiosPostResult');
 
+            async function createPostByAxios() {
+                axiosPostResult.textContent = 'axios POST 요청 중입니다.';
+
+                const newPost = {
+                    title: 'axios POST 연습',
+                    body: 'axios로 서버에 데이터를 보내는 예제이다.',
+                    userId: 1
+                };
+
+                try {
+                    const response = await axios.post('https://jsonplaceholder.typicode.com/posts', newPost);
+                    console.log(response);
+                    console.log(response.data);
+
+                    axiosPostResult.textContent = JSON.stringify(response.data);
+                } catch (error) {
+                    axiosPostResult.textContent = 'POST 요청 중 문제가 발생했습니다. 콘솔을 확인해주세요.';
+                    console.log(error);
+                }
+            }
+
+            axiosPostButton.addEventListener('click', createPostByAxios);
         </script>
     </section>
 
@@ -88,7 +162,29 @@
         <pre id="instanceResult">버튼을 클릭하면 사용자 상세 정보가 표시된다.</pre>
 
         <script>
+            const instanceButton = document.querySelector('#instanceButton');
+            const instanceResult = document.querySelector('#instanceResult');
 
+            const apiClient = axios.create({
+                baseURL: 'https://jsonplaceholder.typicode.com',
+                timeout: 5000
+            });
+
+            async function getUserByInstance(){
+                try {
+                    const response = await apiClient.get('/users/1');
+                    const user = response.data;
+                    console.log(user);
+
+                    instanceResult.textContent = `이름 : ${user.name}\n이메일 : ${user.email}\n회사 : ${user.company.name}`
+
+                } catch (error) {
+                    instanceResult.textContent = 'GET 요청 중 문제가 발생했습니다. 콘솔을 확인해주세요.';
+                    console.log(error);
+                }
+            }
+
+            instanceButton.addEventListener('click', getUserByInstance);
         </script>
     </section>
 

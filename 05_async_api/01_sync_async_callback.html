@@ -29,7 +29,20 @@
         <pre id="syncResult">버튼을 클릭하면 실행 순서가 표시된다.</pre>
 
         <script>
+            const syncButton = document.querySelector('#syncButton');
+            const syncResult = document.querySelector('#syncResult');
 
+            function addLog(target, text) {
+                target.textContent += `\n${text}`;
+            }
+
+            syncButton.addEventListener('click', () => {
+                syncResult.textContent = '동기 처리 시작';
+
+                addLog(syncResult, '1번 로그 추가');
+                addLog(syncResult, '2번 로그 추가');
+                addLog(syncResult, '3번 로그 추가');
+            });
         </script>
     </section>
 
@@ -47,7 +60,22 @@
         <pre id="asyncResult">버튼을 클릭하면 실행 순서가 표시된다.</pre>
 
         <script>
+            const asyncButton = document.querySelector('#asyncButton');
+            const asyncResult = document.querySelector('#asyncResult');
 
+            asyncButton.addEventListener('click', () => {
+                asyncResult.textContent = '비동기 처리 시작';
+
+                addLog(asyncResult, '1번 로그 추가');
+
+                // setTimeout() 에 전달한 콜백 함수는 바로 실행 되지 않는다.
+                // 브라우저가 3초 뒤에 실행할 함수로 예약해 둔다.
+                setTimeout(() => {
+                    addLog(asyncResult, '2번 로그 추가 - 3초 뒤 실행');
+                }, 3000);
+                
+                addLog(asyncResult, '3번 로그 추가');
+            });
         </script>
     </section>
 
@@ -64,6 +92,24 @@
         <pre id="callbackResult">버튼을 클릭하면 결과가 표시된다.</pre>
 
         <script>
+            const callbackButton = document.querySelector('#callbackButton');
+            const callbackResult = document.querySelector('#callbackResult');
+
+            function increaseByCallback(number, callback) {
+                setTimeout(() => {
+                    const result = number + 10;
+                    // 비동기 작업이 끝난 뒤 실행해야 할 코드를 콜백 함수로 호출한다.
+                    callback(result);
+                }, 1000);
+            }
+
+            callbackButton.addEventListener('click', () => {
+                callbackResult.textContent = '실행 중...';
+
+                increaseByCallback(0, result => {
+                    callbackResult.textContent = `결과 : ${result}`;
+                });
+            });
 
         </script>
     </section>
@@ -82,7 +128,24 @@
         <pre id="hellResult">버튼을 클릭하면 결과가 순서대로 표시된다.</pre>
 
         <script>
+            const hellButton = document.querySelector('#hellButton');
+            const hellResult = document.querySelector('#hellResult');
 
+            hellButton.addEventListener('click', () => {
+                hellResult.textContent = '콜백 중첩 실행 시작';
+
+                increaseByCallback(0, result => {
+                    addLog(hellResult, `1차 결과 : ${result}`);
+
+                    increaseByCallback(result, result => {
+                        addLog(hellResult, `2차 결과 : ${result}`);
+
+                        increaseByCallback(result, result => {
+                            addLog(hellResult, `3차 결과 : ${result}`);        
+                        });
+                    });
+                });
+            });
         </script>
     </section>
 </body>
